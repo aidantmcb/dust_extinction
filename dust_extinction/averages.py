@@ -96,7 +96,7 @@ class G03_SMCBar(BaseExtAveModel):
         ----------
         in_x: float
            expects either x in units of wavelengths or frequency
-           or assumes wavelengths in wavenumbers [1/micron]
+           or assumes wavelengths in microns
 
            internally wavenumbers are used
 
@@ -209,7 +209,7 @@ class G03_LMCAvg(BaseExtAveModel):
         ----------
         in_x: float
            expects either x in units of wavelengths or frequency
-           or assumes wavelengths in wavenumbers [1/micron]
+           or assumes wavelengths in microns
 
            internally wavenumbers are used
 
@@ -325,7 +325,7 @@ class G03_LMC2(BaseExtAveModel):
         ----------
         in_x: float
            expects either x in units of wavelengths or frequency
-           or assumes wavelengths in wavenumbers [1/micron]
+           or assumes wavelengths in microns
 
            internally wavenumbers are used
 
@@ -626,7 +626,7 @@ class GCC09_MWAvg(BaseExtAveModel):
         ----------
         in_x: float
            expects either x in units of wavelengths or frequency
-           or assumes wavelengths in wavenumbers [1/micron]
+           oor assumes wavelengths in microns
 
            internally wavenumbers are used
 
@@ -640,10 +640,11 @@ class GCC09_MWAvg(BaseExtAveModel):
         ValueError
            Input x values outside of defined range
         """
-        # convert to wavenumbers (1/micron) if x input in units
+        # convert to microns if x input in units
         with u.add_enabled_equivalencies(u.spectral()):
             x_quant = u.Quantity(in_x, u.micron, dtype=np.float64)
 
+        # convert from input microns to wavenumbers (1/x)
         # strip the quantity to avoid needing to add units to all the
         #    polynomical coefficients
         x = 1.0/x_quant.value

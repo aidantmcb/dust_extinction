@@ -25,7 +25,7 @@ def _curve_F99_method(in_x, Rv,
     ----------
     in_x: float
         expects either x in units of wavelengths or frequency
-        or assumes wavelengths in wavenumbers [1/micron]
+        or assumes wavelengths in microns
 
         internally wavenumbers are used
 
