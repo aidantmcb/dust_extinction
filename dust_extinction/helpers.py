@@ -27,4 +27,4 @@ def _test_valid_x_range(x, x_range, outname):
                          + str(x_range[0])
                          + ' <= x <= '
                          + str(x_range[1])
-                         + ', x has units 1/micron]')
+                         + ', x has units micron]')

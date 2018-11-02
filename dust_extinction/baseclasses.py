@@ -23,7 +23,7 @@ class BaseExtModel(Model):
         ----------
         x: float
            expects either x in units of wavelengths or frequency
-           or assumes wavelengths in wavenumbers [1/micron]
+           or assumes wavelengths in wavelength [microns]
 
            internally wavenumbers are used
 

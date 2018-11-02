@@ -8,7 +8,7 @@ from ..averages import GCC09_MWAvg
 from .helpers import _invalid_x_range
 
 
-x_bad = [-1.0, 0.1, 11., 100.]
+x_bad = 1.0/np.array([-1.0, 0.1, 11., 100.])
 
 
 @pytest.mark.parametrize("x_invalid", x_bad)
@@ -16,17 +16,17 @@ def test_invalid_wavenumbers(x_invalid):
     _invalid_x_range(x_invalid, GCC09_MWAvg(), 'GCC09')
 
 
-@pytest.mark.parametrize("x_invalid_wavenumber", x_bad/u.micron)
+@pytest.mark.parametrize("x_invalid_wavenumber", 1.0/(x_bad*u.micron))
 def test_invalid_wavenumbers_imicron(x_invalid_wavenumber):
     _invalid_x_range(x_invalid_wavenumber, GCC09_MWAvg(), 'GCC09')
 
 
-@pytest.mark.parametrize("x_invalid_micron", u.micron/x_bad)
+@pytest.mark.parametrize("x_invalid_micron", u.micron*x_bad)
 def test_invalid_micron(x_invalid_micron):
     _invalid_x_range(x_invalid_micron, GCC09_MWAvg(), 'GCC09')
 
 
-@pytest.mark.parametrize("x_invalid_angstrom", u.angstrom*1e4/x_bad)
+@pytest.mark.parametrize("x_invalid_angstrom", u.angstrom*1e4*x_bad)
 def test_invalid_micron(x_invalid_angstrom):
     _invalid_x_range(x_invalid_angstrom, GCC09_MWAvg(), 'GCC09')
 

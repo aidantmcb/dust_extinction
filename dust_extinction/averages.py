@@ -11,8 +11,8 @@ from .shapes import (P92, _curve_F99_method)
 __all__ = ['G03_SMCBar', 'G03_LMCAvg', 'G03_LMC2',
            'GCC09_MWAvg']
 
-x_range_G03 = [0.3, 10.0]
-x_range_GCC09 = [0.3, 1.0/0.0912]
+x_range_G03 = np.array([0.3, 10.0])
+x_range_GCC09 = np.array([0.3, 1.0/0.0912])
 
 
 class G03_SMCBar(BaseExtAveModel):
@@ -75,7 +75,7 @@ class G03_SMCBar(BaseExtAveModel):
                           5.125, 5.375, 5.625, 5.875,
                           6.125, 6.375, 6.625, 6.875,
                           7.125, 7.375, 7.625, 7.875,
-                          8.125, 8.375, 8.625])
+                          8.125, 8.375, 8.625])/u.micron
     obsdata_axav = np.array([0.110, 0.169, 0.250,
                              0.567, 0.801,
                              1.000, 1.374, 1.672,
@@ -189,7 +189,7 @@ class G03_LMCAvg(BaseExtAveModel):
                           5.125, 5.375, 5.625, 5.875,
                           6.125, 6.375, 6.625, 6.875,
                           7.125, 7.375, 7.625, 7.875,
-                          8.125])
+                          8.125])/u.micron
     obsdata_axav = np.array([0.100, 0.186, 0.257,
                              1.000, 1.293, 1.518,
                              1.786, 1.969, 2.149,
@@ -305,7 +305,7 @@ class G03_LMC2(BaseExtAveModel):
                           5.125, 5.375, 5.625, 5.875,
                           6.125, 6.375, 6.625, 6.875,
                           7.125, 7.375, 7.625, 7.875,
-                          8.125])
+                          8.125])/u.micron
     obsdata_axav = np.array([0.101, 0.150, 0.299,
                              1.000, 1.349, 1.665,
                              1.899, 2.067, 2.249,
@@ -562,7 +562,7 @@ class GCC09_MWAvg(BaseExtAveModel):
                     0.0535841, 0.0527281, 0.0615197, 0.0744345, 0.0604337,
                     0.0540828, 0.0502652, 0.0493793, 0.0493413, 0.0494069,
                     0.0490926, 0.0485171, 0.0476265, 0.0488545, 0.048111,
-                    0.0465552, 0.0456084, 0.0465916, 0.0438029, 0.0443429,
+                    0.04655-52, 0.0456084, 0.0465916, 0.0438029, 0.0443429,
                     0.0436129, 0.0431271, 0.0438585, 0.0437505, 0.0432799,
                     0.0428038, 0.0418432, 0.0427744, 0.0426111, 0.0430678,
                     0.043576, 0.0449369, 0.0427624, 0.0420389, 0.0433408,
@@ -608,7 +608,7 @@ class GCC09_MWAvg(BaseExtAveModel):
 
     # put them together
     obsdata_x = np.concatenate((obsdata_x_fuse, obsdata_x_iue,
-                                obsdata_x_bands))
+                                obsdata_x_bands))/u.micron
     obsdata_axav = np.concatenate((obsdata_axav_fuse, obsdata_axav_iue,
                                    obsdata_axav_bands))
     obsdata_axav_unc = np.concatenate((obsdata_axav_unc_fuse,
@@ -642,11 +642,12 @@ class GCC09_MWAvg(BaseExtAveModel):
         """
         # convert to wavenumbers (1/micron) if x input in units
         with u.add_enabled_equivalencies(u.spectral()):
-            x_quant = u.Quantity(in_x, 1.0/u.micron, dtype=np.float64)
+            x_quant = u.Quantity(in_x, u.micron, dtype=np.float64)
 
         # strip the quantity to avoid needing to add units to all the
         #    polynomical coefficients
-        x = x_quant.value
+        x = 1.0/x_quant.value
+
         # check that the wavenumbers are within the defined range
         _test_valid_x_range(x, x_range_GCC09, 'GCC09')
 

@@ -67,13 +67,14 @@ def _curve_F99_method(in_x, Rv,
         Input x values outside of defined range
     """
     # convert to wavenumbers (1/micron) if x input in units
-    # otherwise, assume x in appropriate wavenumber units
+    # otherwise, assume x in micron units
     with u.add_enabled_equivalencies(u.spectral()):
-        x_quant = u.Quantity(in_x, 1.0/u.micron, dtype=np.float64)
+        x_quant = u.Quantity(in_x, u.micron, dtype=np.float64)
 
+    # convert from input microns to wavenumbers (1/x)
     # strip the quantity to avoid needing to add units to all the
     #    polynomical coefficients
-    x = x_quant.value
+    x = 1./x_quant.value
 
     # check that the wavenumbers are within the defined range
     _test_valid_x_range(x, valid_x_range, model_name)
