@@ -9,26 +9,26 @@ from ..averages import G03_LMCAvg
 from .helpers import _invalid_x_range
 
 
-x_bad = [-1.0, 0.2, 3.0, 11.0, 100.]
+x_bad = 1.0/np.array([-1.0, 0.2, 3.0, 11.0, 100.])
 
 
 @pytest.mark.parametrize("x_invalid", x_bad)
-def test_invalid_wavenumbers(x_invalid):
+def test_invalid_microns(x_invalid):
     _invalid_x_range(x_invalid, FM90(), 'FM90')
 
 
-@pytest.mark.parametrize("x_invalid_wavenumber", x_bad/u.micron)
+@pytest.mark.parametrize("x_invalid_wavenumber", 1.0/(x_bad*u.micron))
 def test_invalid_wavenumbers_imicron(x_invalid_wavenumber):
     _invalid_x_range(x_invalid_wavenumber, FM90(), 'FM90')
 
 
-@pytest.mark.parametrize("x_invalid_micron", u.micron/x_bad)
+@pytest.mark.parametrize("x_invalid_micron", x_bad*u.micron)
 def test_invalid_micron(x_invalid_micron):
     _invalid_x_range(x_invalid_micron, FM90(), 'FM90')
 
 
-@pytest.mark.parametrize("x_invalid_angstrom", u.angstrom*1e4/x_bad)
-def test_invalid_micron(x_invalid_angstrom):
+@pytest.mark.parametrize("x_invalid_angstrom", x_bad*u.angstrom*1e4)
+def test_invalid_angstrom(x_invalid_angstrom):
     _invalid_x_range(x_invalid_angstrom, FM90(), 'FM90')
 
 
@@ -62,11 +62,15 @@ def test_FM90_fitting():
     # get an observed extinction curve to fit
     g03_model = G03_LMCAvg()
 
-    x = g03_model.obsdata_x
+    # convert to microns
+    with u.add_enabled_equivalencies(u.spectral()):
+        x_quant = u.Quantity(g03_model.obsdata_x,
+                             u.micron, dtype=np.float64)
+    x = x_quant.value
     # convert to E(x-V)/E(B0V)
     y = (g03_model.obsdata_axav - 1.0)*g03_model.Rv
     # only fit the UV portion (FM90 only valid in UV)
-    gindxs, = np.where(x > 3.125)
+    gindxs, = np.where(x < 1.0/3.125)
 
     fm90_init = FM90()
     fit = LevMarLSQFitter()

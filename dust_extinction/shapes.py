@@ -10,8 +10,8 @@ from .helpers import _test_valid_x_range
 
 __all__ = ['FM90', 'P92']
 
-x_range_FM90 = [1.0/0.32, 1.0/0.0912]
-x_range_P92 = [1.0/1e3, 1.0/1e-3]
+x_range_FM90 = 1.0/np.array([0.32, 0.0912])
+x_range_P92 = 1.0/np.array([1e3, 1e-3])
 
 
 def _curve_F99_method(in_x, Rv,
@@ -66,7 +66,7 @@ def _curve_F99_method(in_x, Rv,
     ValueError
         Input x values outside of defined range
     """
-    # convert to wavenumbers (1/micron) if x input in units
+    # convert to microns if x input in units
     # otherwise, assume x in micron units
     with u.add_enabled_equivalencies(u.spectral()):
         x_quant = u.Quantity(in_x, u.micron, dtype=np.float64)
@@ -229,7 +229,7 @@ class FM90(Fittable1DModel):
         ----------
         in_x: float
            expects either x in units of wavelengths or frequency
-           or assumes wavelengths in wavenumbers [1/micron]
+           or assumes wavelengths in microns
 
            internally wavenumbers are used
 
@@ -246,11 +246,11 @@ class FM90(Fittable1DModel):
         # convert to wavenumbers (1/micron) if x input in units
         # otherwise, assume x in appropriate wavenumber units
         with u.add_enabled_equivalencies(u.spectral()):
-            x_quant = u.Quantity(in_x, 1.0/u.micron, dtype=np.float64)
+            x_quant = u.Quantity(in_x, u.micron, dtype=np.float64)
 
         # strip the quantity to avoid needing to add units to all the
         #    polynomical coefficients
-        x = x_quant.value
+        x = 1.0/x_quant.value
 
         # check that the wavenumbers are within the defined range
         _test_valid_x_range(x, x_range_FM90, 'FM90')

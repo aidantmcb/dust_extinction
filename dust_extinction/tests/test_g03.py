@@ -13,7 +13,7 @@ models = [G03_SMCBar(), G03_LMCAvg(), G03_LMC2()]
 
 @pytest.mark.parametrize("x_invalid", x_bad)
 @pytest.mark.parametrize("tmodel", models)
-def test_invalid_wavenumbers(x_invalid, tmodel):
+def test_invalid_microns(x_invalid, tmodel):
     _invalid_x_range(x_invalid, tmodel, 'G03')
 
 
@@ -31,7 +31,7 @@ def test_invalid_micron(x_invalid_micron, tmodel):
 
 @pytest.mark.parametrize("x_invalid_angstrom", x_bad*u.angstrom*1e4)
 @pytest.mark.parametrize("tmodel", models)
-def test_invalid_micron(x_invalid_angstrom, tmodel):
+def test_invalid_angstrom(x_invalid_angstrom, tmodel):
     _invalid_x_range(x_invalid_angstrom, tmodel, 'G03')
 
 

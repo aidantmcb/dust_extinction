@@ -562,7 +562,7 @@ class GCC09_MWAvg(BaseExtAveModel):
                     0.0535841, 0.0527281, 0.0615197, 0.0744345, 0.0604337,
                     0.0540828, 0.0502652, 0.0493793, 0.0493413, 0.0494069,
                     0.0490926, 0.0485171, 0.0476265, 0.0488545, 0.048111,
-                    0.04655-52, 0.0456084, 0.0465916, 0.0438029, 0.0443429,
+                    0.0465552, 0.0456084, 0.0465916, 0.0438029, 0.0443429,
                     0.0436129, 0.0431271, 0.0438585, 0.0437505, 0.0432799,
                     0.0428038, 0.0418432, 0.0427744, 0.0426111, 0.0430678,
                     0.043576, 0.0449369, 0.0427624, 0.0420389, 0.0433408,
@@ -641,12 +641,12 @@ class GCC09_MWAvg(BaseExtAveModel):
            Input x values outside of defined range
         """
         # convert to microns if x input in units
+        # assume microns if x has no units
         with u.add_enabled_equivalencies(u.spectral()):
             x_quant = u.Quantity(in_x, u.micron, dtype=np.float64)
 
         # convert from input microns to wavenumbers (1/x)
-        # strip the quantity to avoid needing to add units to all the
-        #    polynomical coefficients
+        # strip the quantity to avoid needing to add units for coefficients
         x = 1.0/x_quant.value
 
         # check that the wavenumbers are within the defined range
