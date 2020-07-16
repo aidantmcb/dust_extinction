@@ -2,6 +2,9 @@
 References
 ##########
 
+B92: `Bastiaansen 1992, A&AS, 93, 449
+<https://ui.adsabs.harvard.edu/abs/1992A%26AS...93..449B/abstract>`_
+
 CCM89: `Cardelli, Clayton, & Mathis 1989, ApJ, 345, 245
 <https://ui.adsabs.harvard.edu/abs/1989ApJ...345..245C>`_
 
